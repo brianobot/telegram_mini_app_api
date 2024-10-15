@@ -13,7 +13,9 @@ SECRET_KEY = "django-insecure-i@3vs%d05j6@h_9d^-ks+@3=33+yz7st7j%%6ha8w5v(7ohz)f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "telegram-mini-app-api.onrender.com",
+]
 
 
 # Application definition
