@@ -30,4 +30,4 @@ class QuestionSerializer(serializers.ModelSerializer):
     
 
 class AnsweredQuestionSerializer(serializers.Serializer):
-    question = serializers.PrimaryKeyRelatedField(queryset=Question.objects.all())
+    question: str = serializers.PrimaryKeyRelatedField(queryset=Question.objects.all())
