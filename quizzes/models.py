@@ -6,6 +6,9 @@ from config.model_utils import BaseModelMixin
 class Question(BaseModelMixin):
     text = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"Question(text={self.text[:150]})"
+
     @property
     def answer(self) -> str:
         option = self.options.filter(is_correct=True).first()
