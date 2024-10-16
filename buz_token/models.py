@@ -14,6 +14,11 @@ class BuzToken(BaseModelMixin):
     amount = models.IntegerField(default=0)
     channel = models.CharField(max_length=20, choices=CHANNEL_OPTIONS)
     metadata = models.JSONField(default=dict, blank=True)
+    """
+        code: \"""
+        
+            \"""
+    """
 
 
 class Task(BaseModelMixin):
@@ -37,6 +42,18 @@ class Task(BaseModelMixin):
             return True
         return False
     
+    def evaluate_logic(self, user) -> bool:
+        code_str = self.metadata.get("code", "def return_false(user): return False")
+        print(f"✅✅✅ {code_str = }")
+        exec(code_str)
+        try:
+            result = locals().get('func')(user)
+            print(f"✅✅✅ {result = }")
+        except Exception as err:
+            print(f"❌❌❌ {err = }")
+            return False
+        return result
+
     @property
     def user_rewarded(self) -> int:
         return self.user_tasks.count()

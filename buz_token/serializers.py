@@ -6,6 +6,7 @@ from buz_token.models import UserTask
 
 class TaskSerializer(serializers.ModelSerializer):
     completed = serializers.SerializerMethodField()
+    is_available = serializers.BooleanField(source="can_reward_user")
 
     class Meta:
         model = Task
@@ -15,6 +16,7 @@ class TaskSerializer(serializers.ModelSerializer):
             "max_users",
             "description",
             "completed",
+            "is_available",
             "created_at",
             "updated_at",
         ]
