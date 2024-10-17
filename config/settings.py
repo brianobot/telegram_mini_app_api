@@ -162,3 +162,10 @@ CORS_ALLOW_HEADERS = (
 
 DJANGO_ADMIN_EMAIL = "7315758175"
 DJANGO_ADMIN_PASSWORD = "securepassword"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "data_cache_table",
+    }
+}

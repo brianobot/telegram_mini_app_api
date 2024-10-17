@@ -28,3 +28,10 @@ class UserQuestion(BaseModelMixin):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="user_questions")
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="user_questions")
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'question'], name='unique_user_question')
+        ]
+
+
+

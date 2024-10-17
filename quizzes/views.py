@@ -1,8 +1,13 @@
 import random
 
+from django.core.cache import cache
+from django.utils import timezone
+
 from rest_framework import viewsets
+from rest_framework import serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.request import Request
 
 from quizzes.models import Question
 from quizzes.models import UserQuestion
@@ -12,10 +17,22 @@ from quizzes.serializers import AnsweredQuestionSerializer
 from drf_spectacular.utils import extend_schema
 
 from config.views import BaseView
+from config.utils import seconds_until_next_day
 
 
 class QuestionViewSet(BaseView, viewsets.ViewSet):
     serializer_class = QuestionSerializer
+
+    def get_user_daily_question_count(self, request: Request) -> int:
+        user_id = request.user.id
+        return cache.get(f"{user_id}_daily_question_count", 0)
+
+    def set_user_daily_question_count(self, request: Request) -> int:
+        user_id = request.user.id
+        current_daily_question_count = self.get_user_daily_question_count(request)
+        updated_daily_question_count = current_daily_question_count + 1
+        cache.set(f"{user_id}_daily_question_count", updated_daily_question_count, timeout=seconds_until_next_day())
+        return updated_daily_question_count
 
     @extend_schema(
         operation_id="question_get",
@@ -34,7 +51,8 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
             # Get a random question from the remaining pool
             random_question = remaining_questions[random.randint(0, remaining_questions.count() - 1)]
             serializer = self.serializer_class(random_question)
-            return Response(serializer.data)
+            question_count = self.set_user_daily_question_count(request)
+            return Response({"daily_question_count": question_count, **serializer.data})
         else:
             return Response({"detail": "No more questions available for the user."}, status=404)
     
@@ -51,11 +69,19 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
         return Response(serializer.data)
     
     @action(detail=False, methods=['POST'])
-    def answered(self, request, *args, **kwargs):
+    def answered(self, request: Request, *args, **kwargs):
         """
         This endpoints marked a particular question specified by it's id as answered by the user
         """
         serializer = AnsweredQuestionSerializer(data=request.data, context=self.get_renderer_context())
         serializer.is_valid(raise_exception=True)
+        question = serializer.validated_data.get("question")
+        today = timezone.now().date()
+        user_today_question_count = UserQuestion.objects.filter(created_at__date=today).count()
+        if user_today_question_count >= 7:
+            msg = "Daily Question Count exceeded!"
+            raise serializers.ValidationError({"detail": msg})
+        
+        UserQuestion.objects.create(user=request.user, question=question)
         return Response(data={"detail": "ok"})
 

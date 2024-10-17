@@ -27,6 +27,7 @@ class TelegramUserIDAuthentication(BaseAuthentication):
     """
     def authenticate(self, request):
         # Get the 'USER_ID' from the request headers
+        print(f"{request.headers = }")
         user_id = request.headers.get('TELEGRAM-USER-ID')
 
         if not user_id:
