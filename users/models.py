@@ -32,4 +32,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     @property
     def buz_tokens(self) -> int:
-        return self.buztoken_set.aggregate(total=Sum('amount')).get('total', 0)
+        return self.buztoken_set.aggregate(total=Sum('amount')).get('total', 0) or 0
+    
+    @property
+    def buz_token_distro(self) -> dict:
+        return {
+            "games": self.buztoken_set.filter(channel="games").count(),
+            "events": self.buztoken_set.filter(channel="events").count(),
+            "referrals": self.buztoken_set.filter(channel="referrals").count(),
+        }
+        

@@ -12,11 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "buz_tokens",
             "referrals",
+            "buz_token_distro",
             "created_at",
             "updated_at",
         ]
-
-    def get_or_create(self):
-        user_id = self.validated_data.get("id")
-        user, created = User.objects.get_or_create(id=user_id)
-        return user
