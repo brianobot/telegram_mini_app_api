@@ -26,16 +26,14 @@ class TelegramUserIDAuthentication(BaseAuthentication):
     Custom authentication class that expects a 'TELEGRAM_USER_ID' key in the headers.
     """
     def authenticate(self, request):
-        # Get the 'USER_ID' from the request headers
-        print(f"{request.headers = }")
-        user_id = request.headers.get('TELEGRAM-USER-ID')
+        telegram_user_id = request.headers.get('TELEGRAM-USER-ID')
 
-        if not user_id:
+        if not telegram_user_id:
             return None  # No authentication credentials provided, continue
 
         try:
             # Try to get or create the user with the provided 'user_id'
-            user, created = User.objects.get_or_create(id=user_id)
+            user, created = User.objects.get_or_create(id=telegram_user_id)
         except Exception as e:
             raise AuthenticationFailed(_('Invalid user ID')) from e
 
