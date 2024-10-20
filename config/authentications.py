@@ -35,6 +35,7 @@ class TelegramUserIDAuthentication(BaseAuthentication):
             # Try to get or create the user with the provided 'user_id'
             user, created = User.objects.get_or_create(id=telegram_user_id)
         except Exception as e:
+            print("🔥🔥🔥🔥 Exception = ", e)
             raise AuthenticationFailed(_('Invalid user ID')) from e
 
         # Attach the user to the request
