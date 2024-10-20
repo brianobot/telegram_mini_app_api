@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -12,5 +13,6 @@ class ReferralViewSet(viewsets.ViewSet):
     def refer(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.validated_data)
+        referral = serializer.save()
+        serializer = self.serializer_class(referral)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
