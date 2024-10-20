@@ -157,7 +157,7 @@ CORS_ALLOW_HEADERS = (
     "content-type",
     "user-agent",
     "x-csrftoken",
-    "TELEGRAM_USER_ID",
+    "TELEGRAM-USER-ID",
 )
 
 DJANGO_ADMIN_EMAIL = "7315758175"
