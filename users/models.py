@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models import Sum
-
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 
@@ -41,4 +40,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             "events": self.buztoken_set.filter(channel="events").aggregate(total=Sum('amount')).get('total', 0) or 0,
             "referrals": self.buztoken_set.filter(channel="referrals").aggregate(total=Sum('amount')).get('total', 0) or 0,
         }
+    
+    @property
+    def position(self) -> int:
+        leaders = User.objects.annotate(
+            total_buztokens=Sum('buztoken__amount'),
+        ).order_by('-total_buztokens').values('id')
+        leaders_list = [leader.get('id') for leader in leaders]
+        return leaders_list.index(self.id) + 1
         
