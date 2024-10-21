@@ -53,6 +53,11 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
         """
         This endpoint returns a random question from the db for the particular user
         """
+        question_count = self.get_user_daily_question_count(request)
+        if question_count > 7:
+            msg = "Maximum Daily Question Reached"
+            raise serializers.ValidationError({"detail": msg})
+
         user_answered_questions_ids = UserQuestion.objects.filter(user=request.user).values_list('question_id', flat=True)
 
         # Exclude these questions from the available pool

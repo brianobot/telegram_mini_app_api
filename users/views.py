@@ -3,7 +3,7 @@ from django.db.models import Sum
 from django.db.models import Window
 from django.db.models.functions import RowNumber
 
-from rest_framework import views, viewsets
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.request import Request
