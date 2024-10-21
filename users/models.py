@@ -48,4 +48,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         ).order_by('-total_buztokens').values('id')
         leaders_list = [leader.get('id') for leader in leaders]
         return leaders_list.index(self.id) + 1
+    
+    @position.setter
+    def position(self, value) -> int:
+        return value
         
