@@ -22,9 +22,14 @@ class BuzToken(BaseModelMixin):
 
 
 class Task(BaseModelMixin):
+    ACTION_OPTIONS = (
+        ("claim", "claim"),
+        ("do", "do"),
+    )
     description = models.TextField()
     max_users = models.IntegerField()
     reward = models.IntegerField()
+    action = models.CharField(max_length=20, blank=False, choices=ACTION_OPTIONS, default=ACTION_OPTIONS[0][0])
     metadata = models.JSONField(default=dict, blank=True)
 
     def __str__(self) -> str:

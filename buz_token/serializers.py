@@ -13,6 +13,7 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "reward",
+            "action",
             "max_users",
             "description",
             "completed",

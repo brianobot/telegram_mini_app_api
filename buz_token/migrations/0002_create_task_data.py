@@ -13,6 +13,7 @@ TASK_DATA = [
         "id": "1",
         "description": "Follow Us on X",
         "max_users": 150_000,
+        "action": "do",
         "reward": 4900,
         "metadata": {
             "code": f"{FUNC_DECLARATION_STR} return True"
@@ -22,6 +23,7 @@ TASK_DATA = [
         "id": "2",
         "description": "Be one of the first 4,900 players to refer 7 users",
         "max_users": 4900,
+        "action": "claim",
         "reward": 98_000,
         "metadata": {
             "code": f"{FUNC_DECLARATION_STR} return user.referrals >= 7"
@@ -31,6 +33,7 @@ TASK_DATA = [
         "id": "3",
         "description": "Be one of the first 7,000 players to earn 28,000 BUZ from quiz",
         "max_users": 350_000,
+        "action": "claim",
         "reward": 7000,
         "metadata": {
             "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return BuzToken.objects.filter(channel='games', user=user).aggregate(total=Sum('amount')).get('total', 0) or 0 >= 28_000"
@@ -40,6 +43,7 @@ TASK_DATA = [
         "id": "4",
         "description": "Be one of the first 39,200 users to reach 56,700 BUZ",
         "max_users": 39_200,
+        "action": "claim",
         "reward": 49_000,
         "metadata": {
             "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return BuzToken.objects.filter(user=user).aggregate(total=Sum('amount')).get('total', 0) or 0 >= 56_700"
@@ -49,6 +53,7 @@ TASK_DATA = [
         "id": "5",
         "description": "Be one of the first 4,200 users to reach 147,000 BUZ",
         "max_users": 1_190_000,
+        "action": "claim",
         "reward": 4200,
         "metadata": {
             "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return BuzToken.objects.filter(user=user).aggregate(total=Sum('amount')).get('total', 0) or 0 >= 147_000"
@@ -63,6 +68,7 @@ def create_tasks_data(apps, schema_editor):
     for data in TASK_DATA:
         Task.objects.create(
             id=data.get("id"),
+            action=data.get("action"),
             description=data.get('description'),
             max_users=data.get("max_users"),
             reward=data.get('reward'),
