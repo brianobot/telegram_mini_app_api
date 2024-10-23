@@ -14,7 +14,7 @@ class ReferralSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-    def create(self, validated_data) -> Referral:
+    def create(self, validated_data: dict) -> Referral:
         try:
             referral = super().create(validated_data)
         except Exception as err:
