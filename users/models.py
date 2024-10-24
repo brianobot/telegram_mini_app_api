@@ -14,7 +14,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Permissions fields
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    # timestamp fields
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, db_index=True)
 
