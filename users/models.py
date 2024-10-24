@@ -11,7 +11,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.CharField(
         primary_key=True, blank=False, editable=True, max_length=255
     )
-    # Permissions fields
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
