@@ -18,7 +18,7 @@ class TaskViewSet(viewsets.ReadOnlyModelViewSet):
         task = self.get_object()
         user = request.user
         if not task.can_reward_user():
-            msg = "Task is no longer available"
+            msg = "task is no longer available"
             raise serializers.ValidationError({"detail": msg})
 
         if UserTask.objects.filter(task=task, user=user).exists():

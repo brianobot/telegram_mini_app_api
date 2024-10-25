@@ -23,4 +23,5 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
 
     def get_completed(self, instance: Task) -> bool:
-        return UserTask.objects.filter(task=instance).exists()
+        user = self.context.get("request").user
+        return UserTask.objects.filter(user=user, task=instance).exists()
