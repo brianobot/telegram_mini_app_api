@@ -62,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     @property
     def fullname(self) -> str:
-        default_first_name = self.id or self.first_name
+        default_first_name = self.first_name or self.id 
         default_last_name = self.last_name or ' ' 
         return f"{default_first_name} {default_last_name}".strip()
     
