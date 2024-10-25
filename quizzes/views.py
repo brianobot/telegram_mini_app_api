@@ -54,9 +54,11 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
         This endpoint returns a random question from the db for the particular user
         """
         question_count = self.get_user_daily_question_count(request)
+        todays_reward = self.get_user_daily_question_reward(request)
+        print(f"🔥🔥🔥🔥 {type(todays_reward) = }")
         if question_count >= 7:
             msg = "Maximum Daily Question Reached"
-            raise serializers.ValidationError({"detail": msg})
+            raise serializers.ValidationError({"detail": msg, "daily_question_reward": todays_reward})
 
         user_answered_questions_ids = UserQuestion.objects.filter(user=request.user).values_list('question_id', flat=True)
 
@@ -103,8 +105,10 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         question = serializer.validated_data.get("question")
         today = timezone.now().date()
-        user_today_question_count = UserQuestion.objects.filter(created_at__date=today).count()
-        if user_today_question_count >= 7:
+        user_today_question_count = UserQuestion.objects.filter(
+            user=request.user, created_at__date=today
+        ).count()
+        if user_today_question_count > 7:
             msg = "Daily Question Count exceeded!"
             raise serializers.ValidationError({"detail": msg})
         
