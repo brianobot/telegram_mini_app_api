@@ -53,17 +53,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         return value
         
     @property
-    def first_name(self) -> str:
+    def first_name(self) -> str | None:
         return self.metadata.get("first_name")
     
     @property
-    def last_name(self) -> str:
+    def last_name(self) -> str | None:
         return self.metadata.get("last_name")
     
     @property
     def fullname(self) -> str:
         default_first_name = self.id or self.first_name
-        default_last_name = self.last_name or '' 
+        default_last_name = self.last_name or ' ' 
         return f"{default_first_name} {default_last_name}".strip()
     
     @property
