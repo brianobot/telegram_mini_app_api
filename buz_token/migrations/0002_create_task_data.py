@@ -36,7 +36,7 @@ TASK_DATA = [
         "action": "claim",
         "reward": 7000,
         "metadata": {
-            "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return BuzToken.objects.filter(channel='games', user=user).aggregate(total=Sum('amount')).get('total', 0) or 0 >= 28_000"
+            "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return (BuzToken.objects.filter(channel='games', user=user).aggregate(total=Sum('amount')).get('total', 0) or 0) >= 28_000"
         }
     },
     {
@@ -46,7 +46,7 @@ TASK_DATA = [
         "action": "claim",
         "reward": 49_000,
         "metadata": {
-            "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return BuzToken.objects.filter(user=user).aggregate(total=Sum('amount')).get('total', 0) or 0 >= 56_700"
+            "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return (BuzToken.objects.filter(user=user).aggregate(total=Sum('amount')).get('total', 0) or 0) >= 56_700"
         }
     },
     {
@@ -56,7 +56,7 @@ TASK_DATA = [
         "action": "claim",
         "reward": 4200,
         "metadata": {
-            "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return BuzToken.objects.filter(user=user).aggregate(total=Sum('amount')).get('total', 0) or 0 >= 147_000"
+            "code": f"{FUNC_DECLARATION_STR} from buz_token.models import BuzToken;return (BuzToken.objects.filter(user=user).aggregate(total=Sum('amount')).get('total', 0) or 0) >= 147_000"
         }
     },
 ]

@@ -30,4 +30,4 @@ class TaskViewSet(viewsets.ReadOnlyModelViewSet):
             raise serializers.ValidationError({"detail": msg})
         
         task.reward_user(user)
-        return Response(status=status.HTTP_202_ACCEPTED)
+        return Response({"detail": "Task completed sucessfully"}, status=status.HTTP_202_ACCEPTED)
