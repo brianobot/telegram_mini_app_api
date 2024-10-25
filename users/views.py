@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 
 from users.serializers import UserSerializer
+from users.serializers import UpdateUserMetadataSerializer
 from users.models import User
 
 
@@ -20,6 +21,16 @@ class UserViewSet(viewsets.ViewSet):
         serializer = self.serializer_class(request.user)
         return Response(serializer.data)
        
+    @action(detail=False, methods=['POST'], serializer_class=UpdateUserMetadataSerializer)
+    def update_user(self, request: Request, *args, **kwargs):
+        user = self.request.user
+        serializer = self.serializer_class(data=request.data, context=self.get_renderer_context())
+        serializer.is_valid(raise_exception=True)
+        user.metadata.update(**serializer.validated_data)
+        user.save()
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
     @action(detail=False, methods=['GET'])
     def leaderboard(self, request, *args, **kwargs):
         leaders = User.objects.annotate(

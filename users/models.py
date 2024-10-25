@@ -11,6 +11,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.CharField(
         primary_key=True, blank=False, editable=True, max_length=255
     )
+    metadata = models.JSONField(default=dict, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -51,3 +52,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     def position(self, value) -> int:
         return value
         
+    @property
+    def first_name(self) -> str:
+        return self.metadata.get("first_name")
+    
+    @property
+    def last_name(self) -> str:
+        return self.metadata.get("last_name")
+    
+    @property
+    def fullname(self) -> str:
+        return f"{self.first_name or self.id} {self.last_name or ''}".strip()
+    
+    @property
+    def language_code(self) -> str:
+        return self.metadata.get("language_code")

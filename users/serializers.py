@@ -11,6 +11,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
+            "first_name",
+            "last_name",
+            "fullname",
+            "language_code",
             "position",
             "referrals",
             "buz_tokens",
@@ -24,4 +28,19 @@ class UserSerializer(serializers.ModelSerializer):
         return getattr(instance, "position", None)
 
     def get_referral_link(self, instance: User) -> str:
-        return f"https://t.me/obot_test_bot?start={instance.id}"
+        user_id = getattr(instance, "id", None)
+        return f"https://t.me/obot_test_bot?start={user_id}"
+
+
+class UpdateUserMetadataSerializer(serializers.Serializer):
+    id = serializers.CharField(allow_null=True, required=False)
+    is_bot = serializers.BooleanField(allow_null=True, required=False)
+    first_name = serializers.CharField(allow_null=True, required=False)
+    last_name = serializers.CharField(allow_null=True, required=False)
+    username = serializers.CharField(allow_null=True, required=False)
+    language_code = serializers.CharField(allow_null=True, required=False)
+    can_join_groups = serializers.BooleanField(allow_null=True, required=False)
+    can_read_all_group_messages = serializers.BooleanField(allow_null=True, required=False)
+    supports_inline_queries = serializers.BooleanField(allow_null=True, required=False)
+    is_premium = serializers.BooleanField(allow_null=True, required=False)
+    added_to_attachment_menu = serializers.BooleanField(allow_null=True, required=False)
