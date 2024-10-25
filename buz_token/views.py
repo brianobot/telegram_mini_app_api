@@ -21,7 +21,7 @@ class TaskViewSet(viewsets.ReadOnlyModelViewSet):
             msg = "task is no longer available"
             raise serializers.ValidationError({"detail": msg})
 
-        if UserTask.objects.filter(task=task, user=user).exists():
+        if UserTask.objects.filter(user=user, task=task).exists():
             msg = "task already completed"
             raise serializers.ValidationError({"detail": msg})
         
@@ -30,4 +30,5 @@ class TaskViewSet(viewsets.ReadOnlyModelViewSet):
             raise serializers.ValidationError({"detail": msg})
         
         task.reward_user(user)
-        return Response({"detail": "Task completed sucessfully"}, status=status.HTTP_202_ACCEPTED)
+        msg = "task completed sucessfully"
+        return Response({"detail": msg}, status=status.HTTP_202_ACCEPTED)

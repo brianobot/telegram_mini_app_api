@@ -3,14 +3,13 @@ from django.dispatch import receiver
 
 from buz_token.models import BuzToken
 from buz_token.models import UserTask
-from buz_token.models import Task
 
 
 @receiver(post_save, sender=UserTask)
 def reward_buz_token(sender, instance: UserTask, created, *args, **kwargs):
     if created:
         reward = instance.task.reward
-        token_reward = BuzToken.objects.create(
+        BuzToken.objects.create(
             amount=reward, 
             channel="events",
             user=instance.user, 

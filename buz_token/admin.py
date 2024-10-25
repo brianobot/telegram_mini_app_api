@@ -15,7 +15,6 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ['description', 'max_users', 'reward', 'can_reward_user', 'user_rewarded', 'tokens_awarded']
 
 
-
 @admin.register(UserTask)
 class UserTaskAdmin(admin.ModelAdmin):
     list_display = ['user', 'task', 'reward', 'created_at']
