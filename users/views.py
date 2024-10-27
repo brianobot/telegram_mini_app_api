@@ -39,7 +39,7 @@ class UserViewSet(viewsets.ViewSet):
                 expression=RowNumber(),
                 order_by=models.F('total_buztokens').desc()
             )
-        ).order_by('-total_buztokens', 'created_at')
+        ).order_by('-total_buztokens')
         serializer = self.serializer_class(leaders, many=True)
         return Response(serializer.data)
     
