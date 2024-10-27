@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self) -> str:
-        return f"User(id={self.id})"
+        return f"User(fullname={self.fullname})"
     
     @property
     def referrals(self) -> int:
