@@ -12,7 +12,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.CharField(
         primary_key=True, blank=False, editable=True, max_length=255
     )
-    profile_image = models.ImageField(blank=True, null=True, upload_to="profile_images")
+    profile_image = models.ImageField(blank=True, null=True, upload_to="profile_images", default="default_image.jpg")
     metadata = models.JSONField(default=dict, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
