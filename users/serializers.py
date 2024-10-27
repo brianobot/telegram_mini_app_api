@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "fullname",
+            "profile_image",
             "language_code",
             "position",
             "referrals",
@@ -39,6 +40,7 @@ class UpdateUserMetadataSerializer(serializers.Serializer):
     last_name = serializers.CharField(allow_null=True, required=False)
     username = serializers.CharField(allow_null=True, required=False)
     language_code = serializers.CharField(allow_null=True, required=False)
+    profile_image = serializers.ImageField(allow_null=True, required=False)
     can_join_groups = serializers.BooleanField(allow_null=True, required=False)
     can_read_all_group_messages = serializers.BooleanField(allow_null=True, required=False)
     supports_inline_queries = serializers.BooleanField(allow_null=True, required=False)

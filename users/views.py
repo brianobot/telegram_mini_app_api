@@ -19,17 +19,18 @@ class UserViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['GET'])
     def users(self, request: Request, *args, **kwargs):
-        serializer = self.serializer_class(request.user)
+        serializer = self.serializer_class(request.user, context=self.get_renderer_context())
         return Response(serializer.data)
        
     @action(detail=False, methods=['POST'], serializer_class=UpdateUserMetadataSerializer)
     def update_user(self, request: Request, *args, **kwargs):
-        user = self.request.user
+        user: User = self.request.user
         serializer = self.serializer_class(data=request.data, context=self.get_renderer_context())
         serializer.is_valid(raise_exception=True)
+        user.profile_image = serializer.validated_data.pop("profile_image", None)
         user.metadata.update(**serializer.validated_data)
         user.save()
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(user, context=self.get_renderer_context())
         return Response(serializer.data)
 
     @action(detail=False, methods=['GET'])
