@@ -23,6 +23,9 @@ from config.utils import seconds_until_next_day
 class QuestionViewSet(BaseView, viewsets.ViewSet):
     serializer_class = QuestionSerializer
 
+    def refresh_db_cache(self, *args, **kwargs):
+        cache.set("reset", 1)
+
     def get_user_daily_question_reward(self, request: Request) -> int:
         user_question_count = UserQuestion.objects.filter(user=request.user, created_at__date=timezone.now().date()).count()
         return user_question_count * 700
@@ -53,9 +56,9 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
         """
         This endpoint returns a random question from the db for the particular user
         """
+        self.refresh_db_cache()
         question_count = self.get_user_daily_question_count(request)
         todays_reward = self.get_user_daily_question_reward(request)
-        print(f"🔥🔥🔥🔥 {type(todays_reward) = }")
         if question_count >= 7:
             msg = "Maximum Daily Question Reached"
             raise serializers.ValidationError({"detail": msg, "daily_question_reward": todays_reward})
