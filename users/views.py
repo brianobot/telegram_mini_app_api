@@ -1,6 +1,7 @@
 from django.db import models 
 from django.db.models import Sum
 from django.db.models import Window
+from django.db.models.functions import Coalesce
 from django.db.models.functions import RowNumber
 
 from rest_framework import viewsets
@@ -34,12 +35,12 @@ class UserViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['GET'])
     def leaderboard(self, request, *args, **kwargs):
         leaders = User.objects.annotate(
-            total_buztokens=Sum('buztoken__amount'),
+            total_buztokens=Coalesce(Sum('buztoken__amount'), 0),
             position=Window(
                 expression=RowNumber(),
                 order_by=models.F('total_buztokens').desc()
             )
-        ).order_by('-total_buztokens')
+        ).order_by('-total_buztokens', "created_at")
         serializer = self.serializer_class(leaders, many=True)
         return Response(serializer.data)
     
