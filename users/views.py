@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 
 from users.serializers import UserSerializer
+from users.serializers import LeaderBoardUserSerializer
 from users.serializers import UpdateUserMetadataSerializer
 from users.models import User
 
@@ -33,7 +34,7 @@ class UserViewSet(viewsets.ViewSet):
         serializer = UserSerializer(user, context=self.get_renderer_context())
         return Response(serializer.data)
 
-    @action(detail=False, methods=['GET', 'OPTIONS', 'HEAD', 'TRACE'])
+    @action(detail=False, methods=['GET', 'OPTIONS', 'HEAD', 'TRACE'], serializer_class=LeaderBoardUserSerializer)
     def leaderboard(self, request, *args, **kwargs):
         leaders = User.objects.annotate(
             total_buztokens=Coalesce(Sum('buztoken__amount'), 0),

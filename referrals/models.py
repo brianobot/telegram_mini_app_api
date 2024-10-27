@@ -15,3 +15,6 @@ class Referral(BaseModelMixin):
                 name='check_referred_not_referer'
             )
         ]
+        indexes = [
+            models.Index(fields=['referrer']),
+        ]
