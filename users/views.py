@@ -17,12 +17,12 @@ from users.models import User
 class UserViewSet(viewsets.ViewSet):
     serializer_class = UserSerializer
 
-    @action(detail=False, methods=['GET'])
+    @action(detail=False, methods=['GET', 'OPTIONS', 'HEAD', 'TRACE'])
     def users(self, request: Request, *args, **kwargs):
         serializer = self.serializer_class(request.user, context=self.get_renderer_context())
         return Response(serializer.data)
        
-    @action(detail=False, methods=['POST'], serializer_class=UpdateUserMetadataSerializer)
+    @action(detail=False, methods=['POST', 'OPTIONS', 'HEAD', 'TRACE'], serializer_class=UpdateUserMetadataSerializer)
     def update_user(self, request: Request, *args, **kwargs):
         user: User = self.request.user
         serializer = self.serializer_class(data=request.data, context=self.get_renderer_context())
@@ -33,7 +33,7 @@ class UserViewSet(viewsets.ViewSet):
         serializer = UserSerializer(user, context=self.get_renderer_context())
         return Response(serializer.data)
 
-    @action(detail=False, methods=['GET'])
+    @action(detail=False, methods=['GET', 'OPTIONS', 'HEAD', 'TRACE'])
     def leaderboard(self, request, *args, **kwargs):
         leaders = User.objects.annotate(
             total_buztokens=Coalesce(Sum('buztoken__amount'), 0),
