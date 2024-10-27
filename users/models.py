@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 
@@ -43,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def position(self) -> int:
         leaders = User.objects.annotate(
-            total_buztokens=Sum('buztoken__amount'),
+            total_buztokens=Coalesce(Sum('buztoken__amount'), 0),
         ).order_by('-total_buztokens').values('id')
         leaders_list = [leader.get('id') for leader in leaders]
         return leaders_list.index(self.id) + 1
