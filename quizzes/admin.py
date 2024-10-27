@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db.models.query import QuerySet
+from django.http import HttpRequest
 
 from quizzes.models import UserQuestion
 from quizzes.models import Question
@@ -18,3 +20,7 @@ class OptionAdmin(admin.ModelAdmin):
 @admin.register(UserQuestion)
 class UserQuestionAdmin(admin.ModelAdmin):
     list_display = ['user', 'question', 'created_at', 'updated_at']
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet:
+        return super().get_queryset(request).select_related('user')
+    

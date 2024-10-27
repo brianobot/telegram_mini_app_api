@@ -15,12 +15,3 @@ class Referral(BaseModelMixin):
                 name='check_referred_not_referer'
             )
         ]
-
-    @property
-    def referred_fullname(self) -> str:
-        return self.referred.fullname
-    
-    @property
-    def referrer_fullname(self) -> str:
-        return self.referrer.fullname
-    
