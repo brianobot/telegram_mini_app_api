@@ -14,11 +14,13 @@ class BuzToken(BaseModelMixin):
     amount = models.IntegerField(default=0)
     channel = models.CharField(max_length=20, choices=CHANNEL_OPTIONS)
     metadata = models.JSONField(default=dict, blank=True)
-    """
-        code: \"""
-        
-            \"""
-    """
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["user", "channel"]),
+        ]
+        ordering = ['-created_at']
+        verbose_name_plural = "Buz Tokens"
 
 
 class Task(BaseModelMixin):

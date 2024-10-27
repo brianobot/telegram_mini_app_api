@@ -4,33 +4,39 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "position",
+            "referrals",
+            "fullname",
+            "profile_image",
+            "buz_tokens",
+            "buz_token_distro",
+            "referral_link",
+            "created_at",
+            "updated_at",
+        ]
+
+
+class LeaderBoardUserSerializer(serializers.ModelSerializer):
     position = serializers.SerializerMethodField()
-    referral_link = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
             "id",
-            "first_name",
-            "last_name",
             "fullname",
             "profile_image",
-            "language_code",
             "position",
-            "referrals",
             "buz_tokens",
-            "referral_link",
-            "buz_token_distro",
             "created_at",
             "updated_at",
         ]
-
+    
     def get_position(self, instance: User) -> int | None:
         return getattr(instance, "position", None)
-
-    def get_referral_link(self, instance: User) -> str:
-        user_id = getattr(instance, "id", None)
-        return f"https://t.me/obot_test_bot?start={user_id}"
 
 
 class UpdateUserMetadataSerializer(serializers.Serializer):

@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.conf.urls.static import static
 
+from debug_toolbar.toolbar import debug_toolbar_urls
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -32,5 +34,5 @@ urlpatterns = [
 ] + [
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
-]
+] + debug_toolbar_urls()
 

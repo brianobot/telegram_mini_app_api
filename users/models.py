@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self) -> str:
-        return f"User(fullname={self.fullname})"
+        return f"User({self.fullname})"
     
     @property
     def referrals(self) -> int:
@@ -32,23 +32,27 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     @property
     def buz_tokens(self) -> int:
-        return self.buztoken_set.aggregate(total=Sum('amount')).get('total', 0) or 0
+        return self.buztoken_set.aggregate(total=Sum('amount')).get('total', 0)
     
     @property
     def buz_token_distro(self) -> dict:
-        return {
-            "games": self.buztoken_set.filter(channel="games").aggregate(total=Sum('amount')).get('total', 0) or 0,
-            "events": self.buztoken_set.filter(channel="events").aggregate(total=Sum('amount')).get('total', 0) or 0,
-            "referrals": self.buztoken_set.filter(channel="referrals").aggregate(total=Sum('amount')).get('total', 0) or 0,
-        }
+        distribution = (
+            self.buztoken_set
+            .values("channel")
+            .annotate(total=Sum("amount"))
+        )
+        result = {"games": 0, "events": 0, "referrals": 0}
+        for entry in distribution:
+            result[entry["channel"]] = entry.get("total", 0)
+        
+        return result
     
     @property
     def position(self) -> int:
         leaders = User.objects.annotate(
             total_buztokens=Coalesce(Sum('buztoken__amount'), 0),
-        ).order_by('-total_buztokens').values('id')
-        leaders_list = [leader.get('id') for leader in leaders]
-        return leaders_list.index(self.id) + 1
+        ).order_by('-total_buztokens').values_list('id', flat=True)
+        return list(leaders).index(self.id) + 1
     
     @position.setter
     def position(self, value) -> int:
@@ -69,5 +73,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         return f"{default_first_name} {default_last_name}".strip()
     
     @property
-    def language_code(self) -> str:
-        return self.metadata.get("language_code")
+    def referral_link(self) -> str:
+        return f"https://t.me/obot_test_bot?start={self.id}"
