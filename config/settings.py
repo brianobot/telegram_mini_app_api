@@ -183,11 +183,9 @@ CORS_ALLOW_HEADERS = (
 DJANGO_ADMIN_EMAIL = "7315758175"
 DJANGO_ADMIN_PASSWORD = "securepassword"
 
-# pip install -r requirements.txt && python3 manage.py migrate && python3 manage.py createcachetable
-# TODO: bring this back after fixing issue with resolving start command
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-#         "LOCATION": "data_cache_table",
-#     }
-# }
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "data_cache_table",
+    }
+}
