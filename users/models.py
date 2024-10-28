@@ -78,4 +78,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     @property
     def referral_link(self) -> str:
-        return f"https://t.me/obot_test_bot?start={self.id}"
+        return f"https://t.me/buzmode_bot?start={self.id}"
