@@ -28,7 +28,9 @@ class UserViewSet(viewsets.ViewSet):
         user: User = self.request.user
         serializer = self.serializer_class(data=request.data, context=self.get_renderer_context())
         serializer.is_valid(raise_exception=True)
-        user.profile_image = serializer.validated_data.pop("profile_image", None)
+        profile_image = serializer.validated_data.pop("profile_image", None)
+        if profile_image:
+            user.profile_image = profile_image
         user.metadata.update(**serializer.validated_data)
         user.save()
         serializer = UserSerializer(user, context=self.get_renderer_context())
