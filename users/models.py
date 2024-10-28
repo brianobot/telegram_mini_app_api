@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     @property
     def buz_tokens(self) -> int:
-        return self.buztoken_set.aggregate(total=Sum('amount')).get('total', 0)
+        return self.buztoken_set.aggregate(Sum('amount'))['amount__sum'] or 0
     
     @property
     def buz_token_distro(self) -> dict:
@@ -66,6 +66,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def last_name(self) -> str | None:
         return self.metadata.get("last_name")
     
+    @property
+    def username(self) -> str:
+        return self.metadata.get("username")
+
     @property
     def fullname(self) -> str:
         default_first_name = self.first_name or self.id 
