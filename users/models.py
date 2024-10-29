@@ -51,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def position(self) -> int:
         leaders = User.objects.annotate(
             total_buztokens=Coalesce(Sum('buztoken__amount'), 0),
-        ).order_by('-total_buztokens').values_list('id', flat=True)
+        ).order_by('-total_buztokens', 'created_at').values_list('id', flat=True)
         return list(leaders).index(self.id) + 1
     
     @position.setter
