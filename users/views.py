@@ -44,7 +44,7 @@ class UserViewSet(viewsets.ViewSet):
                 expression=RowNumber(),
                 order_by=models.F('total_buztokens').desc()
             )
-        ).order_by('-total_buztokens', "created_at")
+        ).order_by('-total_buztokens', "created_at")[:7]
         serializer = self.serializer_class(leaders, many=True, context=self.get_renderer_context())
         return Response(serializer.data)
     
