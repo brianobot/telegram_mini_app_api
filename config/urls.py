@@ -1,20 +1,19 @@
 from django.contrib import admin
-from django.urls import path, include
 from django.http import JsonResponse
+from django.urls import path, include
 
 from django.conf import settings
 from django.conf.urls.static import static
-
-from debug_toolbar.toolbar import debug_toolbar_urls
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
 
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+
+admin.site.site_header = "Buz Mode Web App"
+admin.site.site_title = "Buz Mode Web App Admin site"
+admin.site.index_title = "Buz Mode Web App Admin"
 
 
 def root(request):
@@ -34,5 +33,9 @@ urlpatterns = [
 ] + [
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
-] + debug_toolbar_urls()
+]
 
+if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
+
+    urlpatterns = urlpatterns + debug_toolbar_urls()
