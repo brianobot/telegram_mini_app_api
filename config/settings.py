@@ -21,7 +21,7 @@ environ.Env.read_env(str(BASE_DIR / ".env"))
 SECRET_KEY = "django-insecure-i@3vs%d05j6@h_9d^-ks+@3=33+yz7st7j%%6ha8w5v(7ohz)f"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DJANGO_DEBUG", default=True)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "debug_toolbar",
     "corsheaders",
+    "storages",
     # Local Apps
     "users",
     "quizzes",
@@ -86,24 +87,24 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USER"),
-        "PASSWORD": env("DATABASE_PASSWORD"),
-        "HOST": env("DATABASE_HOST"),
-        "PORT": env("DATABASE_PORT"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": env("DATABASE_NAME"),
+#         "USER": env("DATABASE_USER"),
+#         "PASSWORD": env("DATABASE_PASSWORD"),
+#         "HOST": env("DATABASE_HOST"),
+#         "PORT": env("DATABASE_PORT"),
+#     }
+# }
 
 
 # Password validation
@@ -141,10 +142,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-
 STATIC_ROOT = "staticfiles"
 
-MEDIA_URL = "media/"
+# MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
@@ -186,12 +186,52 @@ CORS_ALLOW_HEADERS = (
     "TELEGRAM-USER-ID",
 )
 
-DJANGO_ADMIN_EMAIL = "7315758175"
-DJANGO_ADMIN_PASSWORD = "securepassword"
+DJANGO_ADMIN_EMAIL = env("DJANGO_ADMIN_EMAIL")
+DJANGO_ADMIN_PASSWORD = env("DJANGO_ADMIN_PASSWORD")
 
+# ---------------------------------------------------------
+# CACHES
+# ---------------------------------------------------------
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "data_cache_table",
     }
+}
+
+
+# ---------------------------------------------------------
+# AWS S3 BUCKET
+# ---------------------------------------------------------
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_S3_FILE_OVERWRITE = False
+# For serving static files directly from S3
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_USE_SSL = True
+AWS_S3_VERIFY = True
+# AWS_QUERYSTRING_AUTH = False  # Set to True if you want signed URLs
+
+
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Static and media file configuration
+# STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+
+STORAGES = {
+    # Media file (image) management  
+    "default": {
+        "BACKEND": "config.storages.MediaRootS3Boto3Storage",
+    },
+    # CSS and JS file management
+    "staticfiles": {
+        # "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }

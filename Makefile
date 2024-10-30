@@ -12,3 +12,6 @@ run-local:
 
 test-local:
 	python3 -m pytest -s
+
+collectstatic:
+	python3 manage.py collectstatic
