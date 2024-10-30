@@ -209,28 +209,27 @@ AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 AWS_S3_FILE_OVERWRITE = False
-# For serving static files directly from S3
-# AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_URL_PROTOCOL = 'https'
 AWS_S3_USE_SSL = True
 AWS_S3_VERIFY = True
 # AWS_QUERYSTRING_AUTH = False  # Set to True if you want signed URLs
 
-STORAGES = {
-    # Media file (image) management  
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-    },
-    # CSS and JS file management
-    "staticfiles": {
-        # "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
+
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Static and media file configuration
 # STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
 MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/media/'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+STORAGES = {
+    # Media file (image) management  
+    "default": {
+        "BACKEND": "config.storages.MediaRootS3Boto3Storage",
+    },
+    # CSS and JS file management
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
