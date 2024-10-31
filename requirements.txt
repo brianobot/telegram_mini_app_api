@@ -3,10 +3,13 @@ attrs==24.2.0
 boto==2.49.0
 boto3==1.35.51
 botocore==1.35.51
+cffi==1.17.1
+cryptography==43.0.3
 Django==5.1.2
 django-cors-headers==4.5.0
 django-debug-toolbar==4.4.6
 django-environ==0.11.2
+django-extensions==3.2.3
 django-sslserver==0.22
 django-storages==1.14.4
 djangorestframework==3.15.2
@@ -17,10 +20,13 @@ iniconfig==2.0.0
 jmespath==1.0.1
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
+MarkupSafe==3.0.2
 packaging==24.1
 pillow==11.0.0
 pluggy==1.5.0
 psycopg2==2.9.10
+pycparser==2.22
+pyOpenSSL==24.2.1
 pytest==8.3.3
 pytest-django==4.9.0
 python-dateutil==2.9.0.post0
@@ -32,3 +38,5 @@ six==1.16.0
 sqlparse==0.5.1
 uritemplate==4.1.1
 urllib3==2.2.3
+Werkzeug==3.0.6
+whitenoise==6.8.2

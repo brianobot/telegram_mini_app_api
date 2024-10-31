@@ -30,11 +30,10 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),  # JSON Schema generation
     path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),  # Redoc UI
     path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"),name="swagger-ui",),  # Swagger UI
-] 
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
 
     urlpatterns += debug_toolbar_urls()
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third Party Apps
+    "django_extensions",
     "drf_spectacular",
     "rest_framework",
     "debug_toolbar",
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -142,7 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = "staticfiles"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -215,8 +217,7 @@ AWS_S3_USE_SSL = True
 AWS_S3_VERIFY = True
 # AWS_QUERYSTRING_AUTH = False  # Set to True if you want signed URLs
 
-
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Static and media file configuration
@@ -235,3 +236,10 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+
+# Deployment Settings
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
