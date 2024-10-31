@@ -11,14 +11,14 @@ env = environ.Env(
 )
 
 # Take environment variables from .env file
-environ.Env.read_env(str(BASE_DIR / ".env"))
+environ.Env.read_env(str(BASE_DIR / ".env"), overwrite=True)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-i@3vs%d05j6@h_9d^-ks+@3=33+yz7st7j%%6ha8w5v(7ohz)f"
+SECRET_KEY = env("DJANGO_SECRET", default="django-insecure-i@3vs%d05j6@h_9d^-ks+@3=33+yz7st7j%%6ha8w5v(7ohz)f")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", default=True)

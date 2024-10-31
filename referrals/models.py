@@ -5,8 +5,8 @@ from config.model_utils import BaseModelMixin
 
 
 class Referral(BaseModelMixin):
-    referred = models.OneToOneField('users.User', on_delete=models.SET, related_name="referral")
-    referrer = models.ForeignKey('users.User', on_delete=models.SET, related_name="referals")
+    referred = models.OneToOneField('users.User', on_delete=models.CASCADE, related_name="referral")
+    referrer = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name="referals")
 
     class Meta:
         constraints = [
