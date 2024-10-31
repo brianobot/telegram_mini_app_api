@@ -8,7 +8,7 @@ migrate:
 	python3 manage.py migrate
 
 run-local:
-	python3 manage.py runserver
+	python3 manage.py runserver_plus --cert-file cert.pem --key-file key.pem
 
 test-local:
 	python3 -m pytest -s

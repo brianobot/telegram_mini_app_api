@@ -4,3 +4,6 @@ db.sqlite3
 .env
 bot_cache_dir
 media/
+cert.pem
+key.pem
+staticfiles/
