@@ -15,3 +15,6 @@ test-local:
 
 collectstatic:
 	python3 manage.py collectstatic
+
+check-deployment:
+	python3 manage.py check --deploy

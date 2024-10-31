@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 (
                     "referred",
                     models.OneToOneField(
-                        on_delete=django.db.models.deletion.SET,
+                        on_delete=django.db.models.deletion.CASCADE,
                         related_name="referral",
                         to=settings.AUTH_USER_MODEL,
                     ),
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 (
                     "referrer",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.SET,
+                        on_delete=django.db.models.deletion.CASCADE,
                         related_name="referals",
                         to=settings.AUTH_USER_MODEL,
                     ),
