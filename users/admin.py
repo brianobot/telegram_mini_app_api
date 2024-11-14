@@ -6,6 +6,7 @@ from users.models import User
 @admin.register(User)
 class BuzzUserAdmin(admin.ModelAdmin):
     list_display = ['id', 'referrals', 'fullname', 'buz_tokens', 'created_at', 'updated_at']
+    search_fields = ['id']
     actions = ['set_default_profile_pic']
 
     @admin.action(description="Set Default profile image if it null")
