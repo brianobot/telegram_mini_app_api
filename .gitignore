@@ -7,3 +7,6 @@ media/
 cert.pem
 key.pem
 staticfiles/
+send_notification.py
+blocked_users.txt
+*.log
