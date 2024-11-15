@@ -32,7 +32,7 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
 
     def get_user_daily_question_count(self, request: Request) -> int:
         user_id = request.user.id
-        return cache.get(f"{user_id}_daily_question_count", 0)
+        return cache.get(f"{user_id}_daily_question_count", 1)
 
     def set_user_daily_question_count(self, request: Request) -> int:
         user_id = request.user.id
@@ -76,8 +76,8 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
             # Get a random question from the remaining pool
             random_question = remaining_questions[random.randint(0, remaining_questions.count() - 1)]
             serializer = self.serializer_class(random_question)
-            question_count = self.set_user_daily_question_count(request)
-            self.set_user_tried_daily_question(request, random_question.id)
+            # question_count = self.set_user_daily_question_count(request)
+            # self.set_user_tried_daily_question(request, random_question.id)
             todays_reward = self.get_user_daily_question_reward(request)
             return Response({
                     "daily_question_count": question_count, 
@@ -116,5 +116,6 @@ class QuestionViewSet(BaseView, viewsets.ViewSet):
             raise serializers.ValidationError({"detail": msg})
         
         UserQuestion.objects.create(user=request.user, question=question)
+        self.set_user_daily_question_count(request)
         return Response(data={"detail": "ok"})
 

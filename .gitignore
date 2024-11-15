@@ -10,3 +10,4 @@ staticfiles/
 send_notification.py
 blocked_users.txt
 *.log
+remove_blocked_users.py
